@@ -7,7 +7,7 @@ const client = new speech.SpeechClient();
 
 
 async function quickstart() {
-  const filename = /*path to audio file here. avoid mp4 files*/ ;
+  const filename = /*path to audio file here. avoid mp4/mp3 files*/ ;
   const encoding = 'LINEAR16';
   const sampleRateHertz = 16000;
   const languageCode = 'en-US';
