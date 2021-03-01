@@ -37,6 +37,7 @@ async function quickstart() {
 
   // Get a Promise representation of the final result of the job
   const [response] = await operation.promise();
+  // TODO: Transcription will have to turned into a frequency chart. Not just logged the console. 
   const transcription = response.results
     .map(result => result.alternatives[0].transcript)
     .join('\n');
