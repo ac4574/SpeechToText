@@ -1,4 +1,5 @@
 // Imports the Google Cloud client library
+// fs module required to read audio file
 const speech = require('@google-cloud/speech');
 const fs = require('fs');
 
