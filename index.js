@@ -1,30 +1,32 @@
 // Imports the Google Cloud client library
-// fs module required to read audio file
 const speech = require('@google-cloud/speech');
-const fs = require('fs');
 
 // Creates a client
 const client = new speech.SpeechClient();
 
-
 async function quickstart() {
-  const filename = /*path to audio file here. avoid mp4/mp3 files*/ ;
-  const encoding = 'LINEAR16';
-  const sampleRateHertz = 16000;
+
+  if(process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    console.log('It is set!');
+  }
+  else {
+      console.log('Not set!');
+  }
+
+  const gcsUri = 'gs://sound_files_gaa/test2.flac';
+  const encoding = 'FLAC';
+  const sampleRateHertz = 48000;
   const languageCode = 'en-US';
 
   const config = {
     encoding: encoding,
     sampleRateHertz: sampleRateHertz,
     languageCode: languageCode,
+    audioChannelCount: 2
   };
 
-  /**
-   * Note that transcription is limited to 60 seconds audio.
-   * Use a GCS file for audio longer than 1 minute.
-   */
   const audio = {
-    content: fs.readFileSync(filename).toString('base64'),
+    uri: gcsUri,
   };
 
   const request = {
@@ -35,14 +37,11 @@ async function quickstart() {
   // Detects speech in the audio file. This creates a recognition job that you
   // can wait for now, or get its result later.
   const [operation] = await client.longRunningRecognize(request);
-
   // Get a Promise representation of the final result of the job
   const [response] = await operation.promise();
-  // TODO: Transcription will have to turned into a frequency chart. Not just logged the console. 
   const transcription = response.results
     .map(result => result.alternatives[0].transcript)
     .join('\n');
   console.log(`Transcription: ${transcription}`);
-
 }
 quickstart()
