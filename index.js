@@ -39,9 +39,19 @@ async function quickstart() {
   const [operation] = await client.longRunningRecognize(request);
   // Get a Promise representation of the final result of the job
   const [response] = await operation.promise();
+  const dict = {}
   const transcription = response.results
     .map(result => result.alternatives[0].transcript)
-    .join('\n');
-  console.log(`Transcription: ${transcription}`);
+    // .join('\n');
+  for (let i=0; i<transcription.length; i++) {
+    let currWord = transcription[i]
+    if (!dict[currWord]) {
+      dict[currWord] = 1
+    } else {
+      dict[currWord] += 1
+    }
+  }
+
+  console.log(`Chart: ${JSON.stringify(dict)}`)
 }
 quickstart()
