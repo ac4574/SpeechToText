@@ -17,8 +17,6 @@ async function speechToFreqChart(filename) {
   //     console.log('Not set!');
   // }
 
-  const filename = 'test4'
-
   const options = {
     destination: `${filename}.flac`,
     public:true
@@ -53,10 +51,10 @@ async function speechToFreqChart(filename) {
   const transcription = response.results
     .map(result => (result.alternatives[0].transcript).trim())
 
-  // Create a frequency chart called 'dict' with the transcript
+  // Create a frequency chart called 'dict' with the transcription
   const dict = {}
   for (let i=0; i<transcription.length; i++) {
-    let currWord = transcription[i]
+    let currWord = transcription[i].toLowerCase()
     if (!dict[currWord]) {
       dict[currWord] = 1
     } else {
@@ -64,9 +62,30 @@ async function speechToFreqChart(filename) {
     }
   }
 
-  console.log(`Chart: ${JSON.stringify(dict)}`)
+  const arrayDict = Object.entries(dict)
+  const sortedDict = arrayDict
+    .sort(([,a],[,b]) => b-a)
+    .reduce((r, [k, v]) => ({ ...r, [k]: v }), {});
+
+  const alphabeticalDict = {}
+
+  for (let i=0; i<arrayDict.length; i++) {
+    let firstLetter = arrayDict[i][0][0].toUpperCase()
+    if (alphabeticalDict[firstLetter]) {
+      alphabeticalDict[firstLetter].push(arrayDict[i])
+      alphabeticalDict[firstLetter][0][1] += arrayDict[i][1]
+    } else {
+      alphabeticalDict[firstLetter] = [['ROW TOTAL', arrayDict[i][1]], arrayDict[i]]
+    }
+  }
+  console.log('\n\tTable sorted alphabetically')
+  console.table(alphabeticalDict)
+  console.log('\tTable sorted by quantity')
+  console.table(sortedDict)
+
 }
-speechToFreqChart()
+
+  speechToFreqChart('test1')
 
 module.exports = {
   speechToFreqChart

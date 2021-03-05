@@ -1,18 +1,27 @@
 {
-  "name": "soundtranscript",
+  "name": "speech_to_freq_chart",
   "version": "1.0.0",
-  "description": "",
+  "description": "Leverages Google Cloud API to create a productivity tool for fighting games.",
   "main": "index.js",
-  "scripts": {
-    "test": "node index"
-  },
   "bin": {
-    "stfc": "./bin/index.js"
+    "st": "./bin/index.js"
   },
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@google-cloud/speech": "^4.2.0",
     "@google-cloud/storage": "^5.8.1"
-  }
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ac4574/SpeechToText.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ac4574/SpeechToText/issues"
+  },
+  "homepage": "https://github.com/ac4574/SpeechToText#readme"
 }
